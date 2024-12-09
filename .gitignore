@@ -1,0 +1,9 @@
+*.block
+/target
+/build
+*.class
+*.gz
+*.jar
+*.tar
+*.lock
+.gradle
