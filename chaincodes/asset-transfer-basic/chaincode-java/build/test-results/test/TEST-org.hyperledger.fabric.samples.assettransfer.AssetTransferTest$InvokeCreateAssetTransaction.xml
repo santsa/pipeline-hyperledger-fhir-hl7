@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.hyperledger.fabric.samples.assettransfer.AssetTransferTest$InvokeCreateAssetTransaction" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-12-09T14:14:10" hostname="SPA-DESKTOP-UT9A4VD" time="0.018">
+<testsuite name="org.hyperledger.fabric.samples.assettransfer.AssetTransferTest$InvokeCreateAssetTransaction" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-12-11T14:40:12" hostname="SPA-DESKTOP-UT9A4VD" time="0.021">
   <properties/>
-  <testcase name="whenAssetExists()" classname="org.hyperledger.fabric.samples.assettransfer.AssetTransferTest$InvokeCreateAssetTransaction" time="0.006"/>
+  <testcase name="whenAssetExists()" classname="org.hyperledger.fabric.samples.assettransfer.AssetTransferTest$InvokeCreateAssetTransaction" time="0.009"/>
   <testcase name="whenAssetDoesNotExist()" classname="org.hyperledger.fabric.samples.assettransfer.AssetTransferTest$InvokeCreateAssetTransaction" time="0.003"/>
   <system-out><![CDATA[Asset asset1 already exists
 ]]></system-out>
