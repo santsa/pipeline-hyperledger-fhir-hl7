@@ -36,11 +36,11 @@ import java.util.concurrent.TimeUnit;
 
 public final class App {
 	private static final String MSP_ID = System.getenv().getOrDefault("MSP_ID", "Org1MSP");
-	private static final String CHANNEL_NAME = System.getenv().getOrDefault("CHANNEL_NAME", "mychannel");
-	private static final String CHAINCODE_NAME = System.getenv().getOrDefault("CHAINCODE_NAME", "basic");
+	private static final String CHANNEL_NAME = System.getenv().getOrDefault("CHANNEL_NAME", "proyectochannel");
+	private static final String CHAINCODE_NAME = System.getenv().getOrDefault("CHAINCODE_NAME", "basic-java");
 
 	// Path to crypto materials.
-	private static final Path CRYPTO_PATH = Paths.get("../../test-network/organizations/peerOrganizations/org1.example.com");
+	private static final Path CRYPTO_PATH = Paths.get("/home/sgorrita/pipeline-hyperledger-fhir-hl7/organizations/peerOrganizations/org1.example.com");
 	// Path to user certificate.
 	private static final Path CERT_DIR_PATH = CRYPTO_PATH.resolve(Paths.get("users/User1@org1.example.com/msp/signcerts"));
 	// Path to user private key directory.
@@ -119,7 +119,7 @@ public final class App {
 
 	public void run() throws GatewayException, CommitException {
 		// Initialize a set of asset data on the ledger using the chaincode 'InitLedger' function.
-		initLedger();
+		//initLedger();
 
 		// Return all the current assets on the ledger.
 		getAllAssets();
@@ -227,7 +227,8 @@ public final class App {
 		try {
 			System.out.println("\n--> Submit Transaction: UpdateAsset asset70, asset70 does not exist and should return an error");
 
-			contract.submitTransaction("UpdateAsset", "asset70", "blue", "5", "Tomoko", "300");
+			//contract.submitTransaction("UpdateAsset", "asset70", "blue", "5", "Tomoko", "300");
+			byte[] result = contract.submitTransaction("UpdateAsset", assetId, "blue", "5", "Tomoko", "300");
 
 			System.out.println("******** FAILED to return an error");
 		} catch (EndorseException | SubmitException | CommitStatusException e) {
