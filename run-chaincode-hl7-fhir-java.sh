@@ -22,8 +22,8 @@ cd $PATH_HOME
 
 #export PATH=$PATH_HOME/bin:$PATH_HOME:$PATH
 #export FABRIC_CFG_PATH=$PATH_HOME/config
-export VERSION="2.0"
-export SEQUENCE="2"
+export VERSION="1.0"
+export SEQUENCE="1"
 peer version
 peer lifecycle chaincode package hl7-fhir-java.tar.gz --path chaincodes/chaincode-hl7-fhir/build/libs/ --lang java --label hl7-fhir-java_$VERSION
 

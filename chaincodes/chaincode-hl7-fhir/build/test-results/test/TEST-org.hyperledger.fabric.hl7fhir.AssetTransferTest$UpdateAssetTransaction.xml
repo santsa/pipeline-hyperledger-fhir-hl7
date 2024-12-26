@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest$UpdateAssetTransaction" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-12-20T15:39:31" hostname="SPA-DESKTOP-UT9A4VD" time="0.007">
+<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest$UpdateAssetTransaction" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-12-26T16:38:12" hostname="SPA-DESKTOP-UT9A4VD" time="0.029">
   <properties/>
-  <testcase name="whenAssetExists()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest$UpdateAssetTransaction" time="0.007"/>
+  <testcase name="whenAssetExists()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest$UpdateAssetTransaction" time="0.029"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

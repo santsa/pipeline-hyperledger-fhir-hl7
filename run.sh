@@ -24,8 +24,8 @@ cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --
 cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output="organizations"
 
 #launch the net
-#docker-compose -f docker-fhir-hl7/docker-compose-pipeline.yaml up -d
-docker-compose -f docker-fhir-hl7/docker-compose-pipeline-couchdb.yaml up -d
+docker-compose -f docker-fhir-hl7/docker-compose-pipeline.yaml up -d
+#docker-compose -f docker-fhir-hl7/docker-compose-pipeline-couchdb.yaml up -d
 
 #configure the nodes and channel
 export FABRIC_CFG_PATH=$PATH_HOME/configtx
