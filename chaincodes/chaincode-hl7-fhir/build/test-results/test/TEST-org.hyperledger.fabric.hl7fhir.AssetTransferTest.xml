@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-12-20T15:39:29" hostname="SPA-DESKTOP-UT9A4VD" time="1.886">
+  <properties/>
+  <testcase name="invokeGetAllAssetsTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="1.863"/>
+  <testcase name="invokeUnknownTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="0.018"/>
+  <system-out><![CDATA[Asset [assetID=asset1, jsonValue=blue]
+Asset [assetID=asset2, jsonValue=red]
+Asset [assetID=asset3, jsonValue=green]
+Asset [assetID=asset4, jsonValue=yellow]
+Asset [assetID=asset5, jsonValue=black]
+Asset [assetID=asset6, jsonValue=white]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+	'Asset [assetID=asset1, jsonValue=blue]
+	&Asset [assetID=asset2, jsonValue=red]
+	(Asset [assetID=asset3, jsonValue=green]
+	)Asset [assetID=asset4, jsonValue=yellow]
+	(Asset [assetID=asset5, jsonValue=black]
+	(Asset [assetID=asset6, jsonValue=white]
+Asset asset1 does not exist
+Asset asset1 already exists
+Asset asset1 does not exist

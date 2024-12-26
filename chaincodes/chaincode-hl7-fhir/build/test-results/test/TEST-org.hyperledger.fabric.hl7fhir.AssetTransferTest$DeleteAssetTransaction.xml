@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest$DeleteAssetTransaction" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-12-20T15:39:31" hostname="SPA-DESKTOP-UT9A4VD" time="0.022">
+  <properties/>
+  <testcase name="whenAssetDoesNotExist()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest$DeleteAssetTransaction" time="0.022"/>
+  <system-out><![CDATA[Asset asset1 does not exist
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

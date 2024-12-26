@@ -3,6 +3,7 @@
 
 #cd pipeline-hyperledger-fhir-hl7
 #sudo -u sgorrita ./run.sh
+find . -type f -name "*.java" -exec sed -i 's/[ \t]*$//' {} \;
 export PATH_HOME=${PWD}
 
 # docker stop $(docker ps -a -q)
@@ -23,8 +24,8 @@ cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --
 cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output="organizations"
 
 #launch the net
-docker-compose -f docker-fhir-hl7/docker-compose-pipeline.yaml up -d
-#docker-compose -f docker-fhir-hl7/docker-compose-pipeline-couchdb.yaml up -d
+#docker-compose -f docker-fhir-hl7/docker-compose-pipeline.yaml up -d
+docker-compose -f docker-fhir-hl7/docker-compose-pipeline-couchdb.yaml up -d
 
 #configure the nodes and channel
 export FABRIC_CFG_PATH=$PATH_HOME/configtx
@@ -61,5 +62,5 @@ peer channel list
 peer channel getinfo -c proyectochannel
 
 #./run-chaincode-go.sh
-./run-chaincode-basic-java.sh
-#./run-chaincode-PatientContract-java.sh
+#./run-chaincode-basic-java.sh
+./run-chaincode-hl7-fhir-java.sh

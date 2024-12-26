@@ -2,7 +2,7 @@
 #git clone https://github.com/salva/pipeline-hyperledger-fhir-hl7.git
 
 #cd pipeline-hyperledger-fhir-hl7
-#sudo -u sgorrita ./run-chaincode-go.sh
+#sudo -u sgorrita ./run-chaincode-basic-java.sh
 export PATH_HOME=${PWD}
 export PATH=$PATH_HOME/bin:$PATH_HOME:$PATH
 export FABRIC_CFG_PATH=$PATH_HOME/config
@@ -21,6 +21,8 @@ cd $PATH_HOME
 
 #export PATH=$PATH_HOME/bin:$PATH_HOME:$PATH
 #export FABRIC_CFG_PATH=$PATH_HOME/config
+export VERSION="1.0"
+export SEQUENCE=1
 peer version
 peer lifecycle chaincode package basic-java.tar.gz --path chaincodes/asset-transfer-basic/chaincode-java/build/libs/ --lang java --label basic-java_1.0
 
@@ -69,7 +71,7 @@ sleep 10
 peer lifecycle chaincode querycommitted --channelID proyectochannel --name basic-java --cafile $PATH_HOME/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 echo "invoke"
-echo $PATH_HOME/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+#echo $PATH_HOME/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 sleep 5
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $PATH_HOME/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C proyectochannel -n basic-java --peerAddresses localhost:7051 --tlsRootCertFiles $PATH_HOME/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $PATH_HOME/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"InitLedger","Args":[]}'
 
