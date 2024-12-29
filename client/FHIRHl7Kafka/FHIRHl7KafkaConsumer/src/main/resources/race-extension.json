@@ -1,0 +1,24 @@
+{
+    "resourceType": "StructureDefinition",
+    "id": "race-extension",
+    "url": "http://example.org/fhir/StructureDefinition/race-extension",
+    "name": "RaceExtension",
+    "status": "draft",
+    "description": "An extension to represent patient race.",
+    "fhirVersion": "4.0.1",
+    "kind": "complex-type",
+    "abstract": false,
+    "type": "Extension",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+    "derivation": "constraint",
+    "differential": {
+      "element": [
+        {
+          "id": "Extension.valueString",
+          "path": "Extension.valueString",
+          "min": 1,
+          "max": "1"
+        }
+      ]
+    }
+  }  
