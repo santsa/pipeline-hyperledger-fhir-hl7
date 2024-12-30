@@ -3,7 +3,6 @@ package com.kafka.consumer.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hl7.fhir.r5.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,13 @@
 package com.kafka.provider.service;
 
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointUse;
-import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r4.model.ContactPoint.ContactPointUse;
+import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 
 import java.util.Random;
 import java.util.UUID;
 
-import org.hl7.fhir.r5.model.Patient;
+import org.hl7.fhir.r4.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,15 +20,12 @@ public class MessageGenerator {
 
         private final FhirContext fhirContextR5;
         private final FhirContext fhirContextR4;
-        //private final FhirContext fhirContextR4B;
 
         @Autowired
         public MessageGenerator(@Qualifier("fhirContextR5") FhirContext fhirContextR5,
-                        @Qualifier("fhirContextR4") FhirContext fhirContextR4/*,
-                        @Qualifier("fhirContextR4B") FhirContext fhirContextR4B*/) {
+                        @Qualifier("fhirContextR4") FhirContext fhirContextR4) {
                 this.fhirContextR5 = fhirContextR5;
                 this.fhirContextR4 = fhirContextR4;
-                //this.fhirContextR4B = fhirContextR4B;
         }
 
         public String generatePatientMessage(int i) {
@@ -43,7 +40,7 @@ public class MessageGenerator {
                 pat.addAddress().setCity("boston"+ i).setPostalCode("12345"+ i);
 
                 // FhirContext ctx = FhirContext.forR5Cached();
-                IParser parser = fhirContextR5.newJsonParser();
+                IParser parser = fhirContextR4.newJsonParser();
                 parser.setPrettyPrint(true);
 
                 String encode = parser.encodeResourceToString(pat);

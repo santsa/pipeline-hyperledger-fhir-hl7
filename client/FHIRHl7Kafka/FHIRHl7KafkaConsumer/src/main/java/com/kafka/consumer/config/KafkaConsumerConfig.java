@@ -34,7 +34,6 @@ public class KafkaConsumerConfig implements WebMvcConfigurer{
         configurer.addPathPrefix(pathPrefix, HandlerTypePredicate.forAnnotation(RestController.class));
     }
 
-
     public Map<String, Object> consumerConfig(){
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -57,6 +56,6 @@ public class KafkaConsumerConfig implements WebMvcConfigurer{
 
     @Bean
     public FhirContext fhirContext() {
-        return FhirContext.forR5Cached();
+        return FhirContext.forR4Cached();
     }
 }

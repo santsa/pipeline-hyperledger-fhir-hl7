@@ -3,6 +3,7 @@ package com.kafka.consumer.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.kafka.consumer.helper.FhirMessageProcessor;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
@@ -13,14 +14,13 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 
-import org.hl7.fhir.r5.model.Patient;
+import org.hl7.fhir.r4.model.Patient;
 import org.hyperledger.fabric.client.*;
 import org.hyperledger.fabric.client.identity.Identities;
 import org.hyperledger.fabric.client.identity.Identity;
 import org.hyperledger.fabric.client.identity.Signer;
 import org.hyperledger.fabric.client.identity.Signers;
 import org.hyperledger.fabric.client.identity.X509Identity;
-import org.hyperledger.fabric.protos.peer.ChaincodeGrpc.ChaincodeStub;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.security.InvalidKeyException;
 import java.security.cert.CertificateException;
-import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -167,6 +166,9 @@ public class FabricService {
 	public String updatePatientAsync(String pat) throws EndorseException, SubmitException, CommitStatusException {
 		log.info("\n--> Async Submit Transaction: UpdateAsset");
 		Patient patient = processor.parsePatientMessage(pat);
+		if(patient == null){
+			return "Invalid Patient";
+		}
 		var commit = contract.newProposal("UpdateAsset")
 				.addArguments(patient.getId(), pat)
 				.build().endorse().submitAsync();
@@ -183,6 +185,9 @@ public class FabricService {
 
 	public String createOrUpdatePatient(String patient) throws Exception{
 		Patient pat = processor.parsePatientMessage(patient);
+		if(pat == null){
+			return "Invalid Patient";
+		}
 		if(pat.getId() == null || pat.getId().isEmpty() || pat.getId().isBlank()){
 			pat.setId(UUID.randomUUID().toString());
 			return createPatient(pat);
@@ -231,7 +236,7 @@ public class FabricService {
 
 	private String encode(Patient patient) {
 		IParser parser = fhirContext.newJsonParser();
-		parser.setPrettyPrint(true);
+		//parser.setPrettyPrint(true);
 		return parser.encodeResourceToString(patient);
 	}
 
