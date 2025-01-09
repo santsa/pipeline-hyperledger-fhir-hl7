@@ -1,11 +1,18 @@
 package com.kafka.consumer.helper;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.Map;
+
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r4.model.Meta;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import ca.uhn.fhir.validation.FhirValidator;
 import ca.uhn.fhir.validation.IValidatorModule;
 import ca.uhn.fhir.validation.ValidationResult;
@@ -14,14 +21,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+
 @Slf4j
 @Component
 public class FhirMessageProcessor {
+
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Autowired
     private FhirContext fhirContext;
 
     public Patient parsePatientMessage(String fhirMessage) {
+        String currentPath = Paths.get("").toAbsolutePath().toString();
+        log.info("Current working directory: " + currentPath);
         if (validateResource(fhirMessage)) {
             return fhirContext.newJsonParser().parseResource(Patient.class, fhirMessage);
         }
@@ -55,6 +71,32 @@ public class FhirMessageProcessor {
             log.error("\n--> Error during validation: " + e.getMessage());
             throw e;
         }
+    }
+
+    public String prettyJson(final byte[] json) {
+		return prettyJson(new String(json, StandardCharsets.UTF_8));
+	}
+
+	private String prettyJson(final String json) {
+		var parsedJson = JsonParser.parseString(json);
+		return gson.toJson(parsedJson);
+	}
+
+	public String encode(Patient patient) {
+		IParser parser = fhirContext.newJsonParser();
+		return parser.encodeResourceToString(patient);
+	}
+
+    public String processHyperledgerResponse(String response) throws Exception {
+        JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
+        String jsonValue = responseObject.get("jsonValue").getAsString();
+        JsonObject patientObject = JsonParser.parseString(jsonValue).getAsJsonObject();
+        JsonObject meta = new JsonObject();
+        meta.addProperty("versionId", "1");
+        meta.addProperty("lastUpdated", Instant.now().toString());
+        meta.addProperty("source", "#hyperledger-fabric");
+        patientObject.add("meta", meta);
+        return gson.toJson(patientObject);
     }
 
 }

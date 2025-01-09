@@ -38,8 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class FabricService {
 
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 	// Inject configuration values from application.properties
 	@Value("${fabric.mspId}")
 	private String mspId;
@@ -137,14 +135,14 @@ public class FabricService {
 			throws EndorseException, SubmitException, CommitStatusException, CommitException {
 		log.info("\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger");
 		var submitResult = contract.submitTransaction("InitLedger");
-		String result = prettyJson(submitResult);
+		String result = processor.prettyJson(submitResult);
 		log.info("*** Transaction committed successfully" + result);
 	}
 
 	public String getAll() throws GatewayException {
 		log.info("\n--> Evaluate Transaction: GetAll, function returns all the current patients on the ledger");
 		var evaluateResult = contract.evaluateTransaction("GetAllAssets");
-		String result = prettyJson(evaluateResult);
+		String result = processor.prettyJson(evaluateResult);
 		log.info("*** Result: " + result);
 		return result;
 	}
@@ -152,7 +150,7 @@ public class FabricService {
 	public String readPatientById(String id) throws GatewayException {
 		log.info("\n--> Evaluate Transaction: readPatient, function returns patient attributes");
 		var evaluateResult = contract.evaluateTransaction("ReadAsset", id);
-		String result = prettyJson(evaluateResult);
+		String result = processor.prettyJson(evaluateResult);
 		log.info("*** Result:" + result);
 		return result;
 	}
@@ -200,19 +198,18 @@ public class FabricService {
 		return updatePatient(pat);
 	}
 
-	private String createPatient(Patient patient)
-			throws EndorseException, SubmitException, CommitStatusException, CommitException {
+	private String createPatient(Patient patient) throws Exception {
 		log.info("\n--> Submit Transaction: createPatient, creates new patient with arguments");
-		var submitResult = contract.submitTransaction("CreateAsset", patient.getId(), encode(patient));
-		String result = prettyJson(submitResult);
+		var submitResult = contract.submitTransaction("CreateAsset", patient.getId(), processor.encode(patient));
+		String result = processor.processHyperledgerResponse(processor.prettyJson(submitResult));
 		log.info("*** Transaction committed successfully " + result);
 		return result;
 	}
 
 	private String updatePatient(Patient patient) throws Exception {
 		log.info("\n--> Submit Transaction: UpdatePatient");
-		var submitResult = contract.submitTransaction("UpdateAsset", patient.getId(), encode(patient));
-		String result = prettyJson(submitResult);
+		var submitResult = contract.submitTransaction("UpdateAsset", patient.getId(), processor.encode(patient));
+		String result = processor.processHyperledgerResponse(processor.prettyJson(submitResult));
 		log.info("*** Result:" + result);
 		return result;
 	}
@@ -220,24 +217,9 @@ public class FabricService {
 	public String deletePatient(String id) throws Exception {
 		log.info("\n--> Submit Transaction: deletePatient " + id);
 		var submitResult = contract.submitTransaction("DeleteAsset", id);
-		String result = prettyJson(submitResult);
+		String result = processor.processHyperledgerResponse(processor.prettyJson(submitResult));
 		log.info("*** Result:" + result);
 		return result;
-	}
-
-	private String prettyJson(final byte[] json) {
-		return prettyJson(new String(json, StandardCharsets.UTF_8));
-	}
-
-	private String prettyJson(final String json) {
-		var parsedJson = JsonParser.parseString(json);
-		return gson.toJson(parsedJson);
-	}
-
-	private String encode(Patient patient) {
-		IParser parser = fhirContext.newJsonParser();
-		//parser.setPrettyPrint(true);
-		return parser.encodeResourceToString(patient);
 	}
 
 }

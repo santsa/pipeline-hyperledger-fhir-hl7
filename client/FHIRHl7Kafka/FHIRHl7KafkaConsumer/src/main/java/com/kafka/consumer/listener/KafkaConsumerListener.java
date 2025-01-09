@@ -25,9 +25,9 @@ public class KafkaConsumerListener {
         }
     }
 
-    @KafkaListener(topics = "HL7-messages-patient", groupId = "fhir-hl7-consumers")
+    /*@KafkaListener(topics = "HL7-messages-patient", groupId = "fhir-hl7-consumers")
     public void listenerHL7(String message) {
         log.info("Received message: " + message);
-    }
+    }*/
 
 }
