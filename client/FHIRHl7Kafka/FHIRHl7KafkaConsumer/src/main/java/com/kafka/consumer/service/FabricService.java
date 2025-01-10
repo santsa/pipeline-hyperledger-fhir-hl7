@@ -164,7 +164,7 @@ public class FabricService {
 	public String updatePatientAsync(String pat) throws EndorseException, SubmitException, CommitStatusException {
 		log.info("\n--> Async Submit Transaction: UpdateAsset");
 		Patient patient = processor.parsePatientMessage(pat);
-		if(patient == null){
+		if (patient == null) {
 			return "Invalid Patient";
 		}
 		var commit = contract.newProposal("UpdateAsset")
@@ -181,16 +181,15 @@ public class FabricService {
 		return status.toString();
 	}
 
-	public String createOrUpdatePatient(String patient) throws Exception{
+	public String createOrUpdatePatient(String patient) throws Exception {
 		Patient pat = processor.parsePatientMessage(patient);
-		if(pat == null){
+		if (pat == null) {
 			return "Invalid Patient";
 		}
-		if(pat.getId() == null || pat.getId().isEmpty() || pat.getId().isBlank()){
+		if (pat.getId() == null || pat.getId().isEmpty() || pat.getId().isBlank()) {
 			pat.setId(UUID.randomUUID().toString());
 			return createPatient(pat);
-		}
-		else if(!patientExists(pat.getIdElement().getIdPart())){
+		} else if (!patientExists(pat.getIdElement().getIdPart())) {
 			pat.setId(pat.getIdElement().getIdPart());
 			return createPatient(pat);
 		}

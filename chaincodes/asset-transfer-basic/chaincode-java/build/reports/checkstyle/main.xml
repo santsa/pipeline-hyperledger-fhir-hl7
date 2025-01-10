@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="8.21">
-<file name="/home/sgorrita/pipeline-hyperledger-fhir-hl7/chaincodes/asset-transfer-basic/chaincode-java/src/main/java/org/hyperledger/fabric/samples/assettransfer/Asset.java">
-</file>
-<file name="/home/sgorrita/pipeline-hyperledger-fhir-hl7/chaincodes/asset-transfer-basic/chaincode-java/src/main/java/org/hyperledger/fabric/samples/assettransfer/AssetTransfer.java">
-</file>
-</checkstyle>

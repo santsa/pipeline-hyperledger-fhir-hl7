@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-01-03T11:52:31" hostname="SPA-DESKTOP-UT9A4VD" time="2.274">
+<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTransferTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-01-09T17:07:53" hostname="SPA-DESKTOP-UT9A4VD" time="2.169">
   <properties/>
-  <testcase name="invokeGetAllAssetsTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="2.241"/>
-  <testcase name="invokeUnknownTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="0.026"/>
+  <testcase name="invokeGetAllAssetsTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="2.146"/>
+  <testcase name="invokeUnknownTransaction()" classname="org.hyperledger.fabric.hl7fhir.AssetTransferTest" time="0.019"/>
   <system-out><![CDATA[Asset [assetID=asset1, jsonValue=blue]
 Asset [assetID=asset2, jsonValue=red]
 Asset [assetID=asset3, jsonValue=green]
