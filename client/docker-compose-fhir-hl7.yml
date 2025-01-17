@@ -1,8 +1,6 @@
-version: '3.8'
-
 networks:
-  test:
-    name: fabric_test
+  fabric_test:
+    external: true
 
 services:
   kafka:
@@ -12,9 +10,8 @@ services:
       - "9092:9092"
     volumes:
       - kafka-data:/var/lib/kafka/data
-    #restart: always
     networks:
-      - test
+      - fabric_test
 
   kafka-ui:
     image: provectuslabs/kafka-ui
@@ -23,45 +20,45 @@ services:
       - "8082:8080"
     environment:
       - DYNAMIC_CONFIG_ENABLED=true
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka_kraft_hl7_fhir:9092 # ✅ FIXED
     volumes:
       - kafka-ui-data:/var/lib/kafka-ui
-    #entrypoint: sudo /bin/sh -c "apk add socat && socat tcp-listen:9092,fork tcp:host.docker.internal:9092 && exec /docker-entrypoint.sh"
     depends_on:
       - kafka
-  #  restart: always
     networks:
-      - test
+      - fabric_test
 
-  #fhir-hl7-provider:
-  #  build: ./FHIRHl7Kafka/FHIRHl7KafkaProvider/
-  #  container_name: fhir-hl7-provider
-  #  ports:
-  #   - "8083:8080"
-  #  environment:
-  #    - SPRING_PROFILES_ACTIVE=dev  # Optional Spring profile
-  #    - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-    #restart: unless-stopped  
-  #  depends_on:
-  #    - kafka
-  #  networks:
-  #    - test
+  fhir-hl7-consumer:
+    build: ./FHIRHl7Kafka/FHIRHl7KafkaConsumer/
+    container_name: fhir-hl7-consumer
+    ports:
+      - "8081:8080"
+    environment:
+      - FABRIC_CRYPTO_PATH=/app/organizations/peerOrganizations/org1.hl7-fhir
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka_kraft_hl7_fhir:9092
+    volumes:
+      - ../organizations/peerOrganizations:/app/organizations/peerOrganizations:ro
+    depends_on:
+      - kafka
+    networks:
+      - fabric_test # ✅ FIXED
 
-  #fhir-hl7-consumer:
-  #  build: ./FHIRHl7Kafka/FHIRHl7KafkaConsumer/
-  #  container_name: fhir-hl7-consumer
-  #  ports:
-  #    - "8081:8080"
-  #  environment:
-  #    - FABRIC_CRYPTO_PATH=/app/organizations/peerOrganizations/org1.hl7-fhir
-  #  volumes:
-  #    - ../organizations/peerOrganizations:/app/organizations/peerOrganizations:ro 
-  #  depends_on:
-  #    - kafka
+  fhir-hl7-provider:
+    build: ./FHIRHl7Kafka/FHIRHl7KafkaProvider/
+    container_name: fhir-hl7-provider
+    ports:
+      - "8083:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev # Optional Spring profile
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka_kraft_hl7_fhir:9092
+    depends_on:
+      - kafka
+    networks:
+      - fabric_test
 
 volumes:
   kafka-data:
-  kafka-ui-data:  
+  kafka-ui-data:
 
     #docker-compose up -d
     #docker-compose start
@@ -85,7 +82,7 @@ volumes:
 
     ## Connect to the container's bash (find out the name with 'docker ps')
     #docker exec -it --user=root <name-of-kafka-ui-container> /bin/sh
-    #docker exec -it --user=root kafka_ui_hl7_fhir /bin/sh 
+    #docker exec -it --user=root kafka_ui_hl7_fhir /bin/sh
     # Now, we are connected to the container's bash.
     # Let's install 'socat'
     # apk add socat

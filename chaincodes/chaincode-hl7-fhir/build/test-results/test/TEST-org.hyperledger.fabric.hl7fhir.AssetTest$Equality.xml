@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-09T17:07:53" hostname="SPA-DESKTOP-UT9A4VD" time="0.163">
+<testsuite name="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-16T14:51:17" hostname="SPA-DESKTOP-UT9A4VD" time="0.19">
   <properties/>
-  <testcase name="handlesOtherObjects()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.128"/>
-  <testcase name="isReflexive()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.002"/>
+  <testcase name="handlesOtherObjects()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.159"/>
+  <testcase name="isReflexive()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.003"/>
   <testcase name="isTransitive()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.003"/>
   <testcase name="handlesInequality()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.002"/>
-  <testcase name="isSymmetric()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.002"/>
+  <testcase name="isSymmetric()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.001"/>
   <testcase name="handlesNull()" classname="org.hyperledger.fabric.hl7fhir.AssetTest$Equality" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
