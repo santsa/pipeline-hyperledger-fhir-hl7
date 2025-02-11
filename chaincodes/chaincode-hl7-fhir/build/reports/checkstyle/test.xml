@@ -4,4 +4,6 @@
 </file>
 <file name="/home/sgorrita/pipeline-hyperledger-fhir-hl7/chaincodes/chaincode-hl7-fhir/src/test/java/org/hyperledger/fabric/hl7fhir/AssetTransferTest.java">
 </file>
+<file name="/home/sgorrita/pipeline-hyperledger-fhir-hl7/chaincodes/chaincode-hl7-fhir/src/test/java/org/hyperledger/fabric/hl7fhir/UtilTest.java">
+</file>
 </checkstyle>

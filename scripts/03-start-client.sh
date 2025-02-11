@@ -1,30 +1,34 @@
 #!/bin/bash
 cd client
-#sudo -u sgorrita ./scripts/03-start-client.sh
+#sudo -u sgorrita ./run-client.sh
 echo "******************************************************"
-echo "***************Init 03-start-client*******************"
+echo "***************Start launch kafka*********************"
 echo "******************************************************" 
-
-export PATH="/mnt/c/Program Files/apache-maven-3.6.3/bin:$PATH"
-echo "*******************************************************"
-echo "************************mvn****************************"
-echo "*******************************************************" 
-cd  FHIRHl7Kafka/
-#echo "Current Directory: $(pwd)"
-mvn clean
-#mvn -DskipTest package
-mvn -DskipTest package
-echo "*******************************************************"
-echo "********Start launch client, server and kafka**********"
-echo "*******************************************************" 
-cd -
 docker-compose -f docker-compose-fhir-hl7.yml down -v
 sleep 5
-docker-compose -f docker-compose-fhir-hl7.yml up --build -d
+docker-compose -f docker-compose-fhir-hl7.yml up -d
 echo "*******************************************************"
-echo "*********End launch client, server and kafka***********"
+echo "*****************End launch kafka**********************"
 echo "*******************************************************"
-
-echo "******************************************************"
-echo "***************End 03-start-client***************]****"
-echo "******************************************************" 
+sleep 5
+export PATH="/mnt/c/Program Files/apache-maven-3.6.3/bin:$PATH"
+echo "*******************************************************"
+echo "**************Start launch provider********************"
+echo "*******************************************************" 
+cd  FHIRHl7Kafka/FHIRHl7KafkaProvider
+#mvn spring-boot:run &
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005" &
+echo "*******************************************************"
+echo "***************End launch provider*********************"
+echo "*******************************************************" 
+cd -
+echo "*******************************************************"
+echo "**************Start launch consumer********************"
+echo "*******************************************************" 
+sleep 10
+cd FHIRHl7Kafka/FHIRHl7KafkaConsumer
+#mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5006"
+echo "*******************************************************"
+echo "**************Start launch consumer********************"
+echo "*******************************************************" 

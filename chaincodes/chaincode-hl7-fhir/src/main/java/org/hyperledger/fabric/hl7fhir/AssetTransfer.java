@@ -2,6 +2,7 @@ package org.hyperledger.fabric.hl7fhir;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -14,6 +15,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import com.owlike.genson.Genson;
@@ -36,6 +38,12 @@ public final class AssetTransfer implements ContractInterface {
         ASSET_ALREADY_EXISTS
     }
 
+    // CHECKSTYLE:OFF
+    public static final String VALUE_1 = "{\r\n  \"id\": \"asset1\",\r\n  \"resourceType\": \"Patient\",\r\n  \"data\": {\r\n    \"name\": [\r\n      {\r\n        \"use\": \"official\",\r\n        \"family\": \"Smith\",\r\n        \"given\": [\"John\"]\r\n      }\r\n    ],\r\n    \"gender\": \"male\",\r\n    \"birthDate\": \"1985-05-23\"\r\n  }\r\n}";
+    public static final String VALUE_2 = "{\r\n  \"id\": \"asset2\",\r\n  \"resourceType\": \"Patient\",\r\n  \"data\": {\r\n    \"name\": [\r\n      {\r\n        \"use\": \"official\",\r\n        \"family\": \"Smith\",\r\n        \"given\": [\"John\"]\r\n      }\r\n    ],\r\n    \"gender\": \"male\",\r\n    \"birthDate\": \"1985-05-23\"\r\n  }\r\n}";
+    // CHECKSTYLE:ON
+
+
     /**
      * Creates some initial assets on the ledger.
      *
@@ -43,11 +51,8 @@ public final class AssetTransfer implements ContractInterface {
      */
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public void InitLedger(final Context ctx) {
-        ChaincodeStub stub = ctx.getStub();
-        // CreateAsset(ctx, "asset" + UUID.randomUUID().toString(), "blue");
-        // CreateAsset(ctx, "asset" + UUID.randomUUID().toString(), "red");
-        CreateAsset(ctx, "asset1", "blue");
-        CreateAsset(ctx, "asset2", "red");
+        CreateAsset(ctx, VALUE_1);
+        CreateAsset(ctx, VALUE_2);
     }
 
     /**
@@ -61,18 +66,44 @@ public final class AssetTransfer implements ContractInterface {
      * @param appraisedValue the appraisedValue of the new asset
      * @return the created asset
      */
+    @SuppressWarnings("unchecked")
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public Asset CreateAsset(final Context ctx, final String assetID, final String jsonValue) {
+    public Asset CreateAsset(final Context ctx, final String value) {
         ChaincodeStub stub = ctx.getStub();
-        if (AssetExists(ctx, assetID)) {
-            String errorMessage = String.format("Asset %s already exists", assetID);
+        Map<String, Object> valueMap = genson.deserialize(value, Map.class);
+        if (AssetExists(ctx, valueMap.get("id").toString())) {
+            String errorMessage = String.format("Asset %s already exists", valueMap.get("id").toString());
             System.out.println(errorMessage);
             throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
         }
-        Asset asset = new Asset(assetID, jsonValue);
-        // Use Genson to convert the Asset into string, sort it alphabetically and
-        // serialize it into a json string
-        stub.putStringState(assetID, genson.serialize(asset));
+        Asset asset = new Asset(valueMap.get("id").toString(), valueMap);
+        stub.putStringState(asset.getId(), genson.serialize(asset));
+        return asset;
+    }
+
+   /**
+     * Updates the properties of an asset on the ledger.
+     *
+     * @param ctx            the transaction context
+     * @param assetID        the ID of the asset being updated
+     * @param color          the color of the asset being updated
+     * @param size           the size of the asset being updated
+     * @param owner          the owner of the asset being updated
+     * @param appraisedValue the appraisedValue of the asset being updated
+     * @return the transferred asset
+     */
+    @SuppressWarnings("unchecked")
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public Asset UpdateAsset(final Context ctx, final String value) {
+        ChaincodeStub stub = ctx.getStub();
+        Map<String, Object> valueMap = genson.deserialize(value, Map.class);
+        if (!AssetExists(ctx, valueMap.get("id").toString())) {
+            String errorMessage = String.format("Asset %s does not exist", valueMap.get("id").toString());
+            System.out.println(errorMessage);
+            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
+        }
+        Asset asset = new Asset(valueMap.get("id").toString(), valueMap);
+        stub.putStringState(asset.getId(), genson.serialize(asset));
         return asset;
     }
 
@@ -95,30 +126,23 @@ public final class AssetTransfer implements ContractInterface {
         return genson.deserialize(assetJSON, Asset.class);
     }
 
-    /**
-     * Updates the properties of an asset on the ledger.
-     *
-     * @param ctx            the transaction context
-     * @param assetID        the ID of the asset being updated
-     * @param color          the color of the asset being updated
-     * @param size           the size of the asset being updated
-     * @param owner          the owner of the asset being updated
-     * @param appraisedValue the appraisedValue of the asset being updated
-     * @return the transferred asset
-     */
-    @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public Asset UpdateAsset(final Context ctx, final String assetID, final String jsonValue) {
-        ChaincodeStub stub = ctx.getStub();
-
-        if (!AssetExists(ctx, assetID)) {
-            String errorMessage = String.format("Asset %s does not exist", assetID);
-            System.out.println(errorMessage);
-            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_NOT_FOUND.toString());
+    @SuppressWarnings("unchecked")
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<Asset> GetAssetHistory(final Context ctx, final String assetID) {
+        QueryResultsIterator<KeyModification> historyIterator = ctx.getStub().getHistoryForKey(assetID);
+        List<Asset> assetHistoryList = new ArrayList<>();
+        for (KeyModification modification : historyIterator) {
+            String assetData = modification.getStringValue();
+            System.out.println("Transaction ID: " + modification.getTxId());
+            System.out.println("Timestamp: " + modification.getTimestamp().toString());
+            System.out.println("Deleted: " + modification.isDeleted());
+            Map<String, Object> valueMap = genson.deserialize(assetData, Map.class);
+            Asset history = new Asset(valueMap.get("id").toString(), valueMap);
+            history.getValue().put("active", modification.isDeleted());
+            history.getValue().put("meta", Map.of("id", modification.getTxId(), "versionId", modification.getTxId(), "lastUpdated", modification.getTimestamp().toString()));
+            assetHistoryList.add(history);
         }
-        Asset newAsset = new Asset(assetID, jsonValue);
-        String sortedJson = genson.serialize(newAsset);
-        stub.putStringState(assetID, sortedJson);
-        return newAsset;
+        return assetHistoryList;
     }
 
     /**

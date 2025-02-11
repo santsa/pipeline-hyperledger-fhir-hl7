@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Asset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hl7-fhir</a> &gt; <a href="index.source.html" class="el_package">org.hyperledger.fabric.hl7fhir</a> &gt; <span class="el_source">Asset.java</span></div><h1>Asset.java</h1><pre class="source lang-java linenums">package org.hyperledger.fabric.hl7fhir;
 
+import java.util.Map;
+
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 
@@ -9,68 +11,68 @@ import com.owlike.genson.annotation.JsonProperty;
 public final class Asset {
 
     @Property()
-    private final String assetID;
+    private final String id;
 
     @Property()
-    private final String jsonValue;
+    private Map&lt;String, Object&gt; value;
 
-    public String getAssetID() {
-<span class="fc" id="L18">        return assetID;</span>
+    public String getId() {
+<span class="fc" id="L20">        return id;</span>
     }
 
-    public String getJsonValue() {
-<span class="fc" id="L22">        return jsonValue;</span>
+    public Map&lt;String, Object&gt; getValue() {
+<span class="fc" id="L24">        return value;</span>
     }
 
-<span class="fc" id="L25">    public Asset(@JsonProperty(&quot;assetID&quot;) final String assetID, @JsonProperty(&quot;jsonValue&quot;) final String jsonValue) {</span>
-<span class="fc" id="L26">        this.assetID = assetID;</span>
-<span class="fc" id="L27">        this.jsonValue = jsonValue;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L27">    public Asset(@JsonProperty(&quot;id&quot;) final String id, @JsonProperty(&quot;value&quot;) final Map&lt;String, Object&gt; value) {</span>
+<span class="fc" id="L28">        this.id = id;</span>
+<span class="fc" id="L29">        this.value = value;</span>
+<span class="fc" id="L30">    }</span>
 
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L33">            return true;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L35">            return true;</span>
         }
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L36">            return false;</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L38">            return false;</span>
         }
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (getClass() != obj.getClass()) {</span>
-<span class="fc" id="L39">            return false;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (getClass() != obj.getClass()) {</span>
+<span class="fc" id="L41">            return false;</span>
         }
-<span class="fc" id="L41">        Asset other = (Asset) obj;</span>
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (assetID == null) {</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (other.assetID != null) {</span>
-<span class="nc" id="L44">                return false;</span>
+<span class="fc" id="L43">        Asset other = (Asset) obj;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (id == null) {</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (other.id != null) {</span>
+<span class="nc" id="L46">                return false;</span>
             }
         } else {
-<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (!assetID.equals(other.assetID)) {</span>
-<span class="fc" id="L48">                return false;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            if (!id.equals(other.id)) {</span>
+<span class="fc" id="L50">                return false;</span>
             }
         }
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (jsonValue == null) {</span>
-<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (other.jsonValue != null) {</span>
-<span class="nc" id="L53">                return false;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (value == null) {</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">            if (other.value != null) {</span>
+<span class="fc" id="L55">                return false;</span>
             }
         } else {
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            if (!jsonValue.equals(other.jsonValue)) {</span>
-<span class="nc" id="L57">                return false;</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (!value.equals(other.value)) {</span>
+<span class="nc" id="L59">                return false;</span>
             }
         }
-<span class="fc" id="L60">        return true;</span>
+<span class="fc" id="L62">        return true;</span>
     }
     @Override
     public int hashCode() {
-<span class="nc" id="L64">        final int prime = 31;</span>
-<span class="nc" id="L65">        int result = 1;</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        result = prime * result + ((assetID == null) ? 0 : assetID.hashCode());</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        result = prime * result + ((jsonValue == null) ? 0 : jsonValue.hashCode());</span>
-<span class="nc" id="L68">        return result;</span>
+<span class="nc" id="L66">        final int prime = 31;</span>
+<span class="nc" id="L67">        int result = 1;</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        result = prime * result + ((id == null) ? 0 : id.hashCode());</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        result = prime * result + ((value == null) ? 0 : value.hashCode());</span>
+<span class="nc" id="L70">        return result;</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L73">        return &quot;Asset [assetID=&quot; + assetID + &quot;, jsonValue=&quot; + jsonValue + &quot;]&quot;;</span>
+<span class="nc" id="L75">        return &quot;Asset [id=&quot; + id + &quot;, value=&quot; + value.toString() + &quot;]&quot;;</span>
     }
 
 }

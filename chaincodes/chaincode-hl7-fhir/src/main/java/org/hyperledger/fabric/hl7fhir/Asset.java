@@ -1,5 +1,7 @@
 package org.hyperledger.fabric.hl7fhir;
 
+import java.util.Map;
+
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 
@@ -9,22 +11,22 @@ import com.owlike.genson.annotation.JsonProperty;
 public final class Asset {
 
     @Property()
-    private final String assetID;
+    private final String id;
 
     @Property()
-    private final String jsonValue;
+    private Map<String, Object> value;
 
-    public String getAssetID() {
-        return assetID;
+    public String getId() {
+        return id;
     }
 
-    public String getJsonValue() {
-        return jsonValue;
+    public Map<String, Object> getValue() {
+        return value;
     }
 
-    public Asset(@JsonProperty("assetID") final String assetID, @JsonProperty("jsonValue") final String jsonValue) {
-        this.assetID = assetID;
-        this.jsonValue = jsonValue;
+    public Asset(@JsonProperty("id") final String id, @JsonProperty("value") final Map<String, Object> value) {
+        this.id = id;
+        this.value = value;
     }
 
     @Override
@@ -39,21 +41,21 @@ public final class Asset {
             return false;
         }
         Asset other = (Asset) obj;
-        if (assetID == null) {
-            if (other.assetID != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
         } else {
-            if (!assetID.equals(other.assetID)) {
+            if (!id.equals(other.id)) {
                 return false;
             }
         }
-        if (jsonValue == null) {
-            if (other.jsonValue != null) {
+        if (value == null) {
+            if (other.value != null) {
                 return false;
             }
         } else {
-            if (!jsonValue.equals(other.jsonValue)) {
+            if (!value.equals(other.value)) {
                 return false;
             }
         }
@@ -63,14 +65,14 @@ public final class Asset {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((assetID == null) ? 0 : assetID.hashCode());
-        result = prime * result + ((jsonValue == null) ? 0 : jsonValue.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
 
     @Override
     public String toString() {
-        return "Asset [assetID=" + assetID + ", jsonValue=" + jsonValue + "]";
+        return "Asset [id=" + id + ", value=" + value.toString() + "]";
     }
 
 }
